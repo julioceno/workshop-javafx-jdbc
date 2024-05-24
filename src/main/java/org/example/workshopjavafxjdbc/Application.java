@@ -1,6 +1,5 @@
 package org.example.workshopjavafxjdbc;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -8,7 +7,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application {
+public class Application extends javafx.application.Application {
+
+    private static Scene mainScene;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
@@ -17,10 +18,14 @@ public class Main extends Application {
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
 
-        Scene mainScene = new Scene(scrollPane);
+        mainScene = new Scene(scrollPane);
         stage.setScene(mainScene);
         stage.setTitle("Sample JavaFX application");
         stage.show();
+    }
+
+    public static Scene getMainScene() {
+        return mainScene;
     }
 
     public static void main(String[] args) {
