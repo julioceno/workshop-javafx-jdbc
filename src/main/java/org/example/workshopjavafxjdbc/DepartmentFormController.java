@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.example.workshopjavafxjdbc.db.DbException;
+import org.example.workshopjavafxjdbc.listerners.DataChangeListener;
 import org.example.workshopjavafxjdbc.model.entities.Department;
 import org.example.workshopjavafxjdbc.model.services.DepartmentService;
 import org.example.workshopjavafxjdbc.utils.Alerts;
@@ -15,6 +16,8 @@ import org.example.workshopjavafxjdbc.utils.Constraints;
 import org.example.workshopjavafxjdbc.utils.Utils;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DepartmentFormController implements Initializable {
@@ -22,6 +25,8 @@ public class DepartmentFormController implements Initializable {
     private Department entity;
 
     private DepartmentService service;
+
+    private List<DataChangeListener> dataChangeListerners = new ArrayList<>();
 
     @FXML
     private TextField txtId;
@@ -45,7 +50,10 @@ public class DepartmentFormController implements Initializable {
     public void setDepartmentService(DepartmentService  service) {
         this.service = service;
     }
-    
+
+    public void subscribeDataChangeListener(DataChangeListener listener) {
+        dataChangeListerners.add(listener);
+    }
 
     @FXML
     public void onBtSaveAction(ActionEvent event) {
@@ -60,6 +68,8 @@ public class DepartmentFormController implements Initializable {
         try {
             entity = getFormData();
             service.saveOrUpdate(entity);
+            notifyDataChangeListeners();
+            
             Utils.currentStage(event).close();
         }
         catch (DbException e) {
@@ -67,6 +77,12 @@ public class DepartmentFormController implements Initializable {
         }
 
 
+    }
+
+    private void notifyDataChangeListeners() {
+        for (DataChangeListener listener : dataChangeListerners) {
+            listener.onDataChanged();
+        }
     }
 
     private Department getFormData() {
