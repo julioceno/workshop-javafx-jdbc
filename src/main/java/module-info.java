@@ -6,4 +6,5 @@ module org.example.workshopjavafxjdbc {
 
     opens org.example.workshopjavafxjdbc to javafx.fxml;
     exports org.example.workshopjavafxjdbc;
+    exports org.example.workshopjavafxjdbc.model.entities;
 }
