@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import org.example.workshopjavafxjdbc.db.DbIntegrityException;
 import org.example.workshopjavafxjdbc.listerners.DataChangeListener;
 import org.example.workshopjavafxjdbc.model.entities.Seller;
+import org.example.workshopjavafxjdbc.model.services.DepartmentService;
 import org.example.workshopjavafxjdbc.model.services.SellerService;
 import org.example.workshopjavafxjdbc.utils.Alerts;
 import org.example.workshopjavafxjdbc.utils.Utils;
@@ -114,7 +115,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 
             SellerFormController controller = loader.getController();
             controller.setSeller(obj);
-            controller.setSellerService(new SellerService());
+            controller.setServices(new SellerService(), new DepartmentService());
+            controller.loadAssociatedObjects();
             controller.subscribeDataChangeListener(this);
             controller.updateFormData();
 
